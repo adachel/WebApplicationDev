@@ -1,0 +1,6 @@
+@WebApplicationDevSem_HostAddress = http://localhost:5147
+
+GET {{WebApplicationDevSem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
