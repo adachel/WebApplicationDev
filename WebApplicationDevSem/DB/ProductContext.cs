@@ -29,7 +29,7 @@ namespace WebApplicationDevSem.DB
                 entity.Property(p => p.Description)
                       .HasMaxLength(1024)
                       .HasColumnName("description");
-                entity.Property(d => d.Price).HasColumnType("decimal").HasColumnName("price");
+                entity.Property(d => d.Price).HasColumnType("float").HasColumnName("price");
 
                 entity.HasOne(p => p.ProductGroup).WithMany(pg => pg.Products).HasForeignKey(p => p.ProductGroupId);
             });
