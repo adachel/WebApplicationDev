@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplicationDevSem.Abstraction;
 using WebApplicationDevSem.DB;
+using WebApplicationDevSem.DTO;
 using WebApplicationDevSem.Models;
+using WebApplicationDevSem.Repo;
 
 namespace WebApplicationDevSem.Controllers
 {
@@ -8,62 +11,36 @@ namespace WebApplicationDevSem.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
+        private readonly IPoductRepo _productRepo;
+
+        public ProductController(IPoductRepo productRepo)
+        {
+            _productRepo = productRepo;
+        }
+
+
         [HttpPost(template: "addproduct")]
-        public ActionResult AddProduct(string name, string description, float price, int productGroupId)
+        public ActionResult AddProduct(ProductViewModel productViewModel)
         {
             try
             {
-                using (var ctx = new ProductContext())
-                {
-                    if (ctx.Products.Count(x => x.Name.ToLower() == name.ToLower()) > 0)
-                    {
-                        return StatusCode(409);
-                    }
-                    else
-                    {
-                        if (ctx.ProductGroup.Count(x => x.Id == productGroupId) > 0)
-                        {
-                            ctx.Products.Add(new Product 
-                            { 
-                                Name = name, 
-                                Description = description,
-                                Price = price,
-                                ProductGroupId = productGroupId 
-                            });
-                            ctx.SaveChanges();
-                        }
-                        else 
-                        {
-                            return StatusCode(428);
-                        } 
-                    }
-                }
-
+                _productRepo.AddProduct(productViewModel);
                 return Ok();
             }
             catch
             {
-                return StatusCode(500);
+                return StatusCode(409);
+                //return StatusCode(500);
             }
         }
 
 
         [HttpGet(template: "getproducts")]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public ActionResult<IEnumerable<ProductViewModel>> GetProducts()
         {
-            try
-            {
-                using (var ctx = new ProductContext())
-                {
-                    var list = ctx.Products.Select(x => new Product { Id = x.Id, Name = x.Name, Description = x.Description }).ToList();
-                    return list;
-                }
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            return Ok(_productRepo.GetProduts());
         }
+
 
         [HttpPatch(template: "patchproduct")]
         public ActionResult PatchProduct(int id, float price)
