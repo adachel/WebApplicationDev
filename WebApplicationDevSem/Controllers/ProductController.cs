@@ -45,55 +45,15 @@ namespace WebApplicationDevSem.Controllers
         [HttpPatch(template: "patchproduct")]
         public ActionResult PatchProduct(int id, float price)
         {
-            try
-            {
-                using (var ctx = new ProductContext())
-                {
-                    if (ctx.Products.Count(x => x.Id == id) > 0)
-                    {
-                        var x = ctx.Products.FirstOrDefault(x => x.Id == id);
-                        x.Price = price;
-                        ctx.SaveChanges();
-                    }
-                    else
-                    {
-                        return StatusCode(404);
-                    }
-                }
-
-                return Ok();
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            _productRepo.UpdateProduct(id, price);
+            return Ok();
         }
 
             [HttpDelete(template: "deleteproduct")]
         public ActionResult DeleteProduct(int id)
         {
-            try
-            {
-                using (var ctx = new ProductContext())
-                {
-                    if (ctx.Products.Count(x => x.Id == id) > 0)
-                    {
-                        var x = ctx.Products.FirstOrDefault(x => x.Id == id);
-                        ctx.Products.Remove(x);
-                        ctx.SaveChanges();
-                    }
-                    else
-                    {
-                        return StatusCode(404);
-                    }
-                }
-
-                return Ok();
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            _productRepo?.DeleteProduct(id);
+            return Ok();
         }
     }
 }

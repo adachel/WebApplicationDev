@@ -6,5 +6,6 @@ namespace WebApplicationDevSem.Abstraction
     {
         public void AddProductGroup(ProductGroupViewModel productGroupViewModel);
         public IEnumerable<ProductGroupViewModel> GetProdutGroups();
+        public void DeleteProductGroup(int id);
     }
 }
