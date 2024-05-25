@@ -18,7 +18,7 @@ namespace WebApplicationDevSem.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: true),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,8 @@ namespace WebApplicationDevSem.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
-                    ProductGroupId = table.Column<int>(type: "integer", nullable: true)
+                    price = table.Column<float>(type: "float", nullable: false),
+                    ProductGroupId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +56,8 @@ namespace WebApplicationDevSem.Migrations
                         name: "FK_products_productgroups_ProductGroupId",
                         column: x => x.ProductGroupId,
                         principalTable: "productgroups",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

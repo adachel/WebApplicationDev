@@ -37,9 +37,16 @@ namespace WebApplicationDevSem
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddMemoryCache(x => x.TrackStatistics = true); // êýø
+            builder.Services.AddMemoryCache(); // êýø
 
-
+            // redis
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                string server = "127.0.0.1";
+                string port = "6379";
+                string cnstring = $"{server}:{port}";
+                options.Configuration = cnstring;
+            });
 
 
             var config = new ConfigurationBuilder();
