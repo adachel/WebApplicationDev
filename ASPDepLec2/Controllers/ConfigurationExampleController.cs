@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASPDepLec2.Util;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASPDepLec2.Controllers
 {
@@ -20,7 +21,8 @@ namespace ASPDepLec2.Controllers
         [HttpGet(template: "getversion")]
         public ActionResult<string> GetVersion()
         {
-            var version = _configuration.GetValue<string>("version:Name");
+            //var version = _configuration.GetValue<string>("version:Name");
+            var version = _configuration.GetSection("VersionInfo").Get<VersionInfo>(); // вариант с классом VersionInfo
             return Ok(version);
         }
 

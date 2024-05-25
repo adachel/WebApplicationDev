@@ -2,6 +2,7 @@
 using ASPExampleDBLec2.DB;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace ASPExampleDBLec2
 {
@@ -13,6 +14,9 @@ namespace ASPExampleDBLec2
     // Microsoft.EntityFrameworkCore.Design
     // Npgsql.EntityFrameworkCore.PostgreSQL
     // Microsoft.AspNetCore.OpenApi
+
+    // для redis
+    // Microsoft.Extensions.Caching.StackExchangeRedis
 
     // Autofac – это контейнер внедрения зависимостей (Dependency Injection, DI) для платформы .NET. 
     // Регистрация зависимостей
@@ -45,7 +49,23 @@ namespace ASPExampleDBLec2
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddMemoryCache(); // для кэширования
+            
+
+            ///////// для redis
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                string server = "127.0.0.1";
+                string port = "6379";
+                string cnstring = $"{server}:{port}";
+                options.Configuration = cnstring;
+            });
+                    
+
+            /////// для кэша
+            builder.Services.AddMemoryCache(options => 
+            {
+                options.TrackStatistics = true; // собирает статистику
+            }); // для кэширования
 
             // билдим конфигурацию
             var config = new ConfigurationBuilder();
@@ -68,6 +88,17 @@ namespace ASPExampleDBLec2
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // для работы со статичными файлами
+            var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+            Directory.CreateDirectory(staticFilesPath);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(staticFilesPath),
+                RequestPath = "/static"
+            });   
+
 
             app.UseHttpsRedirection();
 

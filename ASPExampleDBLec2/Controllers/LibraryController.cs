@@ -32,6 +32,7 @@ namespace ASPExampleDBLec2.Controllers
                 {
                     _context.Authors.Add(new Author { Name = name });
                     _context.SaveChanges();
+                    _memoryCache.Remove("authors");
                     return Ok();
                 }
             }
@@ -70,6 +71,7 @@ namespace ASPExampleDBLec2.Controllers
                     {
                         _context.Books.Add(new Book { Title = title, AuthorId = autorId });
                         _context.SaveChanges();
+                        _memoryCache.Remove("books"); // удаление из кэша
                         return Ok();
                     }
                 }
@@ -84,15 +86,25 @@ namespace ASPExampleDBLec2.Controllers
         [HttpGet(template: "GetBook")]
         public ActionResult<IEnumerable<BookModel>> GetBooks()
         {
+            if (_memoryCache.TryGetValue("books", out List<BookModel> books))
+            {
+                return Ok(books);
+            }
+
             using (_context)
             {
-                var books = _context.Books.Select(x => new BookModel { Author = x.Author.Name, Title = x.Title }).ToList();
-                return Ok(books);   
+                books = _context.Books.Select(x => new BookModel { Author = x.Author.Name, Title = x.Title }).ToList();
+                _memoryCache.Set("books", books.Select( x => new BookModel { Author = x.Author.ToUpper(), Title = x.Title })
+                                                        .ToList(), TimeSpan.FromMinutes(30));
+                return Ok(books);
             }
         }
 
-
-
+        [HttpGet(template: "GetCacheStats")]
+        public ActionResult<MemoryCacheStatistics> GetCachStats()
+        { 
+            return _memoryCache.GetCurrentStatistics(); // получение статистики кеша
+        }
 
     }
 }
