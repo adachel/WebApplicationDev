@@ -2,6 +2,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using WebApplicationDevSem.Abstraction;
+using WebApplicationDevSem.DB;
 using WebApplicationDevSem.Mapping;
 using WebApplicationDevSem.Repo;
 
@@ -25,6 +26,8 @@ namespace WebApplicationDevSem
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); // подключили Autofac
 
+
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -34,15 +37,25 @@ namespace WebApplicationDevSem
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddMemoryCache(x => x.TrackStatistics = true); //
+            builder.Services.AddMemoryCache(x => x.TrackStatistics = true); // кэш
+
+
+
+
+            var config = new ConfigurationBuilder();
+            config.AddJsonFile("appsettings.json");
+            var cfg = config.Build();
 
             builder.Host.ConfigureContainer<ContainerBuilder>(x => 
             { 
                 x.RegisterType<ProductRepo>().As<IPoductRepo>();
                 x.RegisterType<ProductGroupRepo>().As<IProductGroupRepo>();
+                x.Register(c => new ProductContext(cfg.GetConnectionString("db"))).InstancePerDependency();
             });
 
-            
+
+
+
 
             var app = builder.Build();
 

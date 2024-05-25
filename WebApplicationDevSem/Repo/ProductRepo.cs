@@ -12,25 +12,27 @@ namespace WebApplicationDevSem.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
+        private ProductContext _productContext;
 
 
-        public ProductRepo(IMapper mapper, IMemoryCache memoryCache)
+        public ProductRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
         {
             _mapper = mapper;
             _memoryCache = memoryCache;
+            _productContext = productContext;
         }
 
 
         public void AddProduct(ProductViewModel productViewModel)
         {
-            using (var context = new ProductContext())
+            using (_productContext)
             {
-                var entityProduct = context.Products.FirstOrDefault(x => x.Name!.ToLower().Equals(productViewModel.Name!.ToLower()));
+                var entityProduct = _productContext.Products.FirstOrDefault(x => x.Name!.ToLower().Equals(productViewModel.Name!.ToLower()));
                 if (entityProduct == null)
                 {
                     var entity = _mapper.Map<Product>(productViewModel);
-                    context.Products.Add(entity);
-                    context.SaveChanges();
+                    _productContext.Products.Add(entity);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
                 else
@@ -47,9 +49,9 @@ namespace WebApplicationDevSem.Repo
             {
                 return productsCache!;
             }
-            using (var context = new ProductContext())
+            using (_productContext)
             {
-                var products = context.Products.Select(_mapper.Map<ProductViewModel>).ToList();
+                var products = _productContext.Products.Select(_mapper.Map<ProductViewModel>).ToList();
                 _memoryCache.Set("products", products, TimeSpan.FromMinutes(30));   //"products" - ключ, products - что кэшируем,
                                                                                     //TimeSpan.FromMinutes(30) - время кэша
                 return products;
@@ -59,13 +61,13 @@ namespace WebApplicationDevSem.Repo
 
         public void UpdateProduct(int id, float price)
         {
-            using (var ctx = new ProductContext())
+            using (_productContext)
             {
-                if (ctx.Products.Count(x => x.Id == id) > 0)
+                if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
-                    var x = ctx.Products.FirstOrDefault(x => x.Id == id);
+                    var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
                     x.Price = price;
-                    ctx.SaveChanges();
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
                 else
@@ -78,13 +80,13 @@ namespace WebApplicationDevSem.Repo
 
         public void DeleteProduct(int id)
         {
-            using (var ctx = new ProductContext())
+            using (_productContext)
             {
-                if (ctx.Products.Count(x => x.Id == id) > 0)
+                if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
-                    var x = ctx.Products.FirstOrDefault(x => x.Id == id);
-                    ctx.Products.Remove(x);
-                    ctx.SaveChanges();
+                    var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
+                    _productContext.Products.Remove(x);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
                 else

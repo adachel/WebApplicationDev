@@ -43,8 +43,8 @@ namespace ASPExampleDBLec2
 
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -52,13 +52,13 @@ namespace ASPExampleDBLec2
             
 
             ///////// для redis
-            builder.Services.AddStackExchangeRedisCache(options =>
-            {
-                string server = "127.0.0.1";
-                string port = "6379";
-                string cnstring = $"{server}:{port}";
-                options.Configuration = cnstring;
-            });
+            //builder.Services.AddStackExchangeRedisCache(options =>
+            //{
+            //    string server = "127.0.0.1";
+            //    string port = "6379";
+            //    string cnstring = $"{server}:{port}";
+            //    options.Configuration = cnstring;
+            //});
                     
 
             /////// для кэша
@@ -66,6 +66,9 @@ namespace ASPExampleDBLec2
             {
                 options.TrackStatistics = true; // собирает статистику
             }); // для кэширования
+
+
+
 
             // билдим конфигурацию
             var config = new ConfigurationBuilder();
@@ -90,14 +93,14 @@ namespace ASPExampleDBLec2
             }
 
             // для работы со статичными файлами
-            var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
-            Directory.CreateDirectory(staticFilesPath);
+            //var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+            //Directory.CreateDirectory(staticFilesPath);
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(staticFilesPath),
-                RequestPath = "/static"
-            });   
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(staticFilesPath),
+            //    RequestPath = "/static"
+            //});   
 
 
             app.UseHttpsRedirection();

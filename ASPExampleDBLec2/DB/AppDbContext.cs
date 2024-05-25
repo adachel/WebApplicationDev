@@ -7,20 +7,22 @@ namespace ASPExampleDBLec2.DB
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
 
-        private string _connectionString;
+        private string _connectionString; 
 
-        public AppDbContext()
+        public AppDbContext() 
         {
         }
 
-        public AppDbContext(string connectionString)
+        public AppDbContext(string connectionString) 
         {
             _connectionString = connectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(_connectionString);
+            var w = _connectionString;
+
+            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(_connectionString); 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -9,11 +9,20 @@ namespace WebApplicationDevSem.DB
         public DbSet<Storage> Storages { get; set; }
         public DbSet<ProductGroup> ProductGroup { get; set; }
 
+        private string _connectionString;   //
+
+        public ProductContext() //
+        {
+        }
+
+        public ProductContext(string connectionString)  //
+        {
+            _connectionString = connectionString;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.LogTo(Console.WriteLine)
-                          .UseLazyLoadingProxies()
-                          .UseNpgsql("Host=localhost;Port=5432;Username=aaa;Password=1234;Database=Seminar");
+            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(_connectionString);    //
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

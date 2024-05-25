@@ -11,11 +11,13 @@ namespace WebApplicationDevSem.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
+        private ProductContext _productContext;
 
-        public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache)
+        public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
         {
             _mapper = mapper;
             _memoryCache = memoryCache;
+            _productContext = productContext;
         }
 
         public ProductGroupRepo()
@@ -24,14 +26,14 @@ namespace WebApplicationDevSem.Repo
 
         public void AddProductGroup(ProductGroupViewModel productGroupViewModel)
         {
-            using (var context = new ProductContext())
+            using (_productContext)
             {
-                var entityGroup = context.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
+                var entityGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
                 if (entityGroup == null)
                 {
                     var entity = _mapper.Map<ProductGroup>(productGroupViewModel);
-                    context.ProductGroup.Add(entity);
-                    context.SaveChanges();
+                    _productContext.ProductGroup.Add(entity);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("groups");
                 }
                 else
@@ -48,9 +50,9 @@ namespace WebApplicationDevSem.Repo
             {
                 return productGroupsCache!;
             }
-            using (var context = new ProductContext())
+            using (_productContext)
             {
-                var groups = context.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
+                var groups = _productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
                 _memoryCache.Set("groups", groups, TimeSpan.FromMinutes(30));   
                 return groups;
             }
@@ -59,15 +61,15 @@ namespace WebApplicationDevSem.Repo
 
         public void DeleteProductGroup(int id)
         {
-            using (var context = new ProductContext())
+            using (_productContext)
             {
-                if (context.ProductGroup.Count(x => x.Id == id) > 0)
+                if (_productContext.ProductGroup.Count(x => x.Id == id) > 0)
                 {
-                    var entityProductGroup = context.ProductGroup.FirstOrDefault(x => x.Id == id);
-                    if (context.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
+                    var entityProductGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
+                    if (_productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
                     {
-                        context.ProductGroup.Remove(entityProductGroup!);
-                        context.SaveChanges();
+                        _productContext.ProductGroup.Remove(entityProductGroup!);
+                        _productContext.SaveChanges();
                         _memoryCache.Remove("groups");
                     }
                     else
