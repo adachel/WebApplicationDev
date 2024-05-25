@@ -24,15 +24,19 @@ namespace WebApplicationDevSem.Repo
 
         public void AddProductGroup(ProductGroupViewModel productGroupViewModel)
         {
-            using (var context = new ProductContext()) 
+            using (var context = new ProductContext())
             {
                 var entityGroup = context.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
-                if (entityGroup == null) 
+                if (entityGroup == null)
                 {
                     var entity = _mapper.Map<ProductGroup>(productGroupViewModel);
                     context.ProductGroup.Add(entity);
                     context.SaveChanges();
                     _memoryCache.Remove("groups");
+                }
+                else
+                {
+                    throw new Exception("ProductGroup already exist");
                 }
             }
         }
@@ -40,13 +44,42 @@ namespace WebApplicationDevSem.Repo
 
         public IEnumerable<ProductGroupViewModel> GetProdutGroups()
         {
-            throw new NotImplementedException();
+            if (_memoryCache.TryGetValue("groups", out List<ProductGroupViewModel>? productGroupsCache)) 
+            {
+                return productGroupsCache!;
+            }
+            using (var context = new ProductContext())
+            {
+                var groups = context.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
+                _memoryCache.Set("groups", groups, TimeSpan.FromMinutes(30));   
+                return groups;
+            }
         }
 
 
         public void DeleteProductGroup(int id)
         {
-            throw new NotImplementedException();
+            using (var context = new ProductContext())
+            {
+                if (context.ProductGroup.Count(x => x.Id == id) > 0)
+                {
+                    var entityProductGroup = context.ProductGroup.FirstOrDefault(x => x.Id == id);
+                    if (context.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
+                    {
+                        context.ProductGroup.Remove(entityProductGroup!);
+                        context.SaveChanges();
+                        _memoryCache.Remove("groups");
+                    }
+                    else
+                    {
+                        throw new Exception("Group is not empty");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Group does not exist");
+                }
+            }
         }
 
 

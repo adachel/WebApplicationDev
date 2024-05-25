@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using WebApplicationDevSem.Abstraction;
 using WebApplicationDevSem.DB;
 using WebApplicationDevSem.DTO;
@@ -19,7 +20,7 @@ namespace WebApplicationDevSem.Controllers
         }
 
 
-        [HttpPost(template: "addproduct")]
+        [HttpPost(template: "AddProduct")]
         public ActionResult AddProduct(ProductViewModel productViewModel)
         {
             try
@@ -30,30 +31,45 @@ namespace WebApplicationDevSem.Controllers
             catch
             {
                 return StatusCode(409);
-                //return StatusCode(500);
             }
         }
 
 
-        [HttpGet(template: "getproducts")]
+        [HttpGet(template: "GetProducts")]
         public ActionResult<IEnumerable<ProductViewModel>> GetProducts()
         {
             return Ok(_productRepo.GetProduts());
         }
 
 
-        [HttpPatch(template: "patchproduct")]
+        [HttpPatch(template: "PatchProduct")]
         public ActionResult PatchProduct(int id, float price)
         {
-            _productRepo.UpdateProduct(id, price);
-            return Ok();
+            try
+            {
+                _productRepo.UpdateProduct(id, price);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(404);
+            }
+
         }
 
-            [HttpDelete(template: "deleteproduct")]
+        [HttpDelete(template: "DeleteProduct")]
         public ActionResult DeleteProduct(int id)
         {
-            _productRepo?.DeleteProduct(id);
-            return Ok();
+            try
+            {
+                _productRepo?.DeleteProduct(id);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(404);
+            }
+
         }
     }
 }

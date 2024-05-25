@@ -23,8 +23,9 @@ namespace WebApplicationDevSem
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); // подключили Autofac
 
+            // Add services to the container.
             builder.Services.AddControllers();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile)); // 
@@ -35,10 +36,10 @@ namespace WebApplicationDevSem
 
             builder.Services.AddMemoryCache(x => x.TrackStatistics = true); //
 
-            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); // подключили Autofac
             builder.Host.ConfigureContainer<ContainerBuilder>(x => 
             { 
                 x.RegisterType<ProductRepo>().As<IPoductRepo>();
+                x.RegisterType<ProductGroupRepo>().As<IProductGroupRepo>();
             });
 
             
