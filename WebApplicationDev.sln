@@ -17,16 +17,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3UserApi", "Lec3UserApi\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3LibraryApi", "Lec3LibraryApi\Lec3LibraryApi.csproj", "{B2BE4CED-BB41-484F-883A-A60786205B71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lec3ApiClientsBook", "Lec3ApiClientsBook\Lec3ApiClientsBook.csproj", "{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3ApiClientsBook", "Lec3ApiClientsBook\Lec3ApiClientsBook.csproj", "{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{1EF742A0-3D75-4CFF-9CCF-D58DE55692AD}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.txt = Readme.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lec3ApiGW", "Lec3ApiGW\Lec3ApiGW.csproj", "{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3ApiGW", "Lec3ApiGW\Lec3ApiGW.csproj", "{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL", "GraphQI\GraphQL.csproj", "{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL", "GraphQI\GraphQL.csproj", "{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sem3GraphQL", "Sem3GraphQL\Sem3GraphQL.csproj", "{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,10 @@ Global
 		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
