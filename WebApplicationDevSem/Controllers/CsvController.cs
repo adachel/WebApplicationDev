@@ -30,9 +30,9 @@ namespace WebApplicationDevSem.Controllers
             var value = _memoryCache.GetString(key);
             if (!string.IsNullOrEmpty(value))
             {
-                return JsonSerializer.Deserialize<T>(value);
+                return JsonSerializer.Deserialize<T>(value)!;
             }
-            return default;
+            return default!;
         }
 
         private void SetData<T>(string key, T value)
@@ -46,7 +46,7 @@ namespace WebApplicationDevSem.Controllers
             var data = GetData<T>(key);
             if (data == null)
             {
-                value = default;
+                value = default!;
                 return false;
             }
             else
@@ -55,7 +55,7 @@ namespace WebApplicationDevSem.Controllers
                 return true;
             }
         }
-        private string GetCsv(IEnumerable<Product> product)
+        private string GetCsv(IEnumerable<ProductViewModel> product)
         {
             StringBuilder sb = new StringBuilder();
             
@@ -70,7 +70,7 @@ namespace WebApplicationDevSem.Controllers
         public FileContentResult GetProductCsv()
         {
             var content = "";
-            if (TryGetValue("producs", out List<Product> products))
+            if (TryGetValue("producs", out List<ProductViewModel> products))
             {
                 content = GetCsv(products);
             }
@@ -78,14 +78,12 @@ namespace WebApplicationDevSem.Controllers
             {
                 using (_context)
                 {
-                    products = _context.Products.Select(x => new Product { ProductGroupId = x.ProductGroupId, Name = x.Name }).ToList();
+                    products = _context.Products.Select(x => new ProductViewModel { ProductGroupId = x.ProductGroupId, Name = x.Name }).ToList();
 
                     content = GetCsv(products);
                 }
             }
             return File(new System.Text.UTF8Encoding().GetBytes(content), "text/csv", "report.csv");
         }
-
-
     }
 }

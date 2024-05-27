@@ -20,7 +20,7 @@ namespace WebApplicationDevSem.Controllers
 
 
         [HttpPost(template: "AddGroup")]
-        public ActionResult AddGroup(/*string name, string description = ""*/ ProductGroupViewModel productGroupViewModel)
+        public ActionResult AddGroup(ProductGroupViewModel productGroupViewModel)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace WebApplicationDevSem.Controllers
 
 
         [HttpGet(template: "GetGroups")]
-        public ActionResult<IEnumerable<ProductGroup>> GetGroups()
+        public ActionResult<IEnumerable<ProductGroupViewModel>> GetGroups()
         {
             return Ok(_groupRepo.GetProdutGroups());
         }

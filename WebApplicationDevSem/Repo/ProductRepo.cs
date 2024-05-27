@@ -66,7 +66,7 @@ namespace WebApplicationDevSem.Repo
                 if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
                     var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
-                    x.Price = price;
+                    x!.Price = price;
                     _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
@@ -85,7 +85,7 @@ namespace WebApplicationDevSem.Repo
                 if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
                     var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
-                    _productContext.Products.Remove(x);
+                    _productContext.Products.Remove(x!);
                     _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
