@@ -1,0 +1,6 @@
+@Lec3ApiGW_HostAddress = http://localhost:5239
+
+GET {{Lec3ApiGW_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

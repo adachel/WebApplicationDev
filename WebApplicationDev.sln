@@ -3,15 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplicationDevLec1", "WebApplicationDev\WebApplicationDevLec1.csproj", "{5CCEB866-A07B-4FFD-A668-035EAD6230B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec1WebApplicationDev", "WebApplicationDev\Lec1WebApplicationDev.csproj", "{5CCEB866-A07B-4FFD-A668-035EAD6230B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiApplicationLec1", "ApiApplication\ApiApplicationLec1.csproj", "{89146894-B24B-4503-9AD6-D1431C34A266}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec1ApiApplication", "ApiApplication\Lec1ApiApplication.csproj", "{89146894-B24B-4503-9AD6-D1431C34A266}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplicationDevSem", "WebApplicationDevSem\WebApplicationDevSem.csproj", "{6D240EE0-B0C7-43B8-828F-2729D39AAA16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemWebApplicationDev", "WebApplicationDevSem\SemWebApplicationDev.csproj", "{6D240EE0-B0C7-43B8-828F-2729D39AAA16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPExampleDBLec2", "ASPExampleDBLec2\ASPExampleDBLec2.csproj", "{79C36584-781F-4396-8DE3-80A96A274FCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec2ASPExampleDB", "ASPExampleDBLec2\Lec2ASPExampleDB.csproj", "{79C36584-781F-4396-8DE3-80A96A274FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPDepLec2", "ASPDepLec2\ASPDepLec2.csproj", "{ADB67024-ED8B-4436-8F20-ABF1C5C9EFE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec2ASPDep", "ASPDepLec2\Lec2ASPDep.csproj", "{ADB67024-ED8B-4436-8F20-ABF1C5C9EFE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3UserApi", "Lec3UserApi\Lec3UserApi.csproj", "{DFE72929-D7CB-4E4B-9142-9421511190EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3LibraryApi", "Lec3LibraryApi\Lec3LibraryApi.csproj", "{B2BE4CED-BB41-484F-883A-A60786205B71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lec3ApiClientsBook", "Lec3ApiClientsBook\Lec3ApiClientsBook.csproj", "{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{1EF742A0-3D75-4CFF-9CCF-D58DE55692AD}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lec3ApiGW", "Lec3ApiGW\Lec3ApiGW.csproj", "{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL", "GraphQI\GraphQL.csproj", "{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +54,26 @@ Global
 		{ADB67024-ED8B-4436-8F20-ABF1C5C9EFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB67024-ED8B-4436-8F20-ABF1C5C9EFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB67024-ED8B-4436-8F20-ABF1C5C9EFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE72929-D7CB-4E4B-9142-9421511190EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE72929-D7CB-4E4B-9142-9421511190EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE72929-D7CB-4E4B-9142-9421511190EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE72929-D7CB-4E4B-9142-9421511190EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2BE4CED-BB41-484F-883A-A60786205B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2BE4CED-BB41-484F-883A-A60786205B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2BE4CED-BB41-484F-883A-A60786205B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2BE4CED-BB41-484F-883A-A60786205B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A9747A-EA34-4661-B1D5-85E5C61ECA6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DA87FC-2D4D-4C6E-A5B6-984C28D36204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C998D3-EF9E-42C8-813B-9B8EBBBD3971}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,6 @@
+@UserApiLec3_HostAddress = http://localhost:5197
+
+GET {{UserApiLec3_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

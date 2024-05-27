@@ -1,0 +1,7 @@
+Nuget:
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Design
+Microsoft.EntityFrameworkCore.Proxies
+Npgsql.EntityFrameworkCore.PostgreSQL
+Autofac.Extensions.DependencyInjection
+AutoMapper.Extensions.Microsoft.DependencyInjection

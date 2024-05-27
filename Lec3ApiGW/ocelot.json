@@ -1,0 +1,81 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/User/{method}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7088
+        }
+      ],
+      "UpstreamPathTemplate": "/User/{method}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "SwaggerKey": "users"
+    },
+    {
+      "DownstreamPathTemplate": "/Library/{method}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7005
+        }
+      ],
+      "UpstreamPathTemplate": "/Library/{method}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "SwaggerKey": "library"
+    },
+    {
+      "DownstreamPathTemplate": "/ClientBooks/{method}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7155
+        }
+      ],
+      "UpstreamPathTemplate": "/ClientBooks/{method}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "SwaggerKey": "clientBooks"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:6696"
+  },
+  "SwaggerEndPoints": [
+    {
+      "Key": "users",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Users API",
+          "Version": "v1",
+          "Url": "https://localhost:7088/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "library",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Library API",
+          "Version": "v1",
+          "Url": "https://localhost:7005/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "clientBooks",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "ClientBooks API",
+          "Version": "v1",
+          "Url": "https://localhost:7155/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

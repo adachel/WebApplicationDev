@@ -1,0 +1,2 @@
+Nuget
+HotChocolate.AspNetCore

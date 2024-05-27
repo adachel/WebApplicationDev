@@ -49,17 +49,17 @@ namespace ASPExampleDBLec2
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
 
-            ///////// для redis
-            //builder.Services.AddStackExchangeRedisCache(options =>
-            //{
-            //    string server = "127.0.0.1";
-            //    string port = "6379";
-            //    string cnstring = $"{server}:{port}";
-            //    options.Configuration = cnstring;
-            //});
-                    
+
+            /////// для redis
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                string server = "127.0.0.1";
+                string port = "6379";
+                string cnstring = $"{server}:{port}";
+                options.Configuration = cnstring;
+            });
+
 
             /////// для кэша
             builder.Services.AddMemoryCache(options => 
@@ -93,14 +93,14 @@ namespace ASPExampleDBLec2
             }
 
             // для работы со статичными файлами
-            //var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
-            //Directory.CreateDirectory(staticFilesPath);
+            var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+            Directory.CreateDirectory(staticFilesPath);
 
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(staticFilesPath),
-            //    RequestPath = "/static"
-            //});   
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(staticFilesPath),
+                RequestPath = "/static"
+            });
 
 
             app.UseHttpsRedirection();
