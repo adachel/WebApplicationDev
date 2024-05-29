@@ -11,7 +11,7 @@ using WebApplicationDevSem.DB;
 namespace WebApplicationDevSem.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240525201819_InitialCreate")]
+    [Migration("20240529181657_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

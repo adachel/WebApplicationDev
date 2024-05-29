@@ -2,17 +2,11 @@
 using Sem3GraphQL.DTO;
 using Sem3GraphQL.Repo;
 
-namespace Sem3GraphQL
+namespace Sem3GraphQL.GraphServises.Query
 {
     public class Query
     {
-        //private IPoductRepo _product;
-
-        //public Query(IPoductRepo product)
-        //{
-        //    _product = product;
-        //}
-
         public IEnumerable<ProductViewModel> GetProducts([Service] ProductRepo product) => product.GetProduts();
+        public IEnumerable<ProductGroupViewModel> GetProductGroups([Service] ProductGroupRepo groups) => groups.GetProdutGroups();
     }
 }

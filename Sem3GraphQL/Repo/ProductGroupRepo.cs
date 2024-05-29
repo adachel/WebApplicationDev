@@ -11,65 +11,61 @@ namespace Sem3GraphQL.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
-        private ProductContext _productContext;
 
-        public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
+        public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache)
         {
             _mapper = mapper;
             _memoryCache = memoryCache;
-            _productContext = productContext;
         }
 
-        public ProductGroupRepo()
+        public int AddProductGroup(ProductGroupViewModel productGroupViewModel)
         {
-        }
-
-        public void AddProductGroup(ProductGroupViewModel productGroupViewModel)
-        {
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                var entityGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
+                var entityGroup = productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
                 if (entityGroup == null)
                 {
                     var entity = _mapper.Map<ProductGroup>(productGroupViewModel);
-                    _productContext.ProductGroup.Add(entity);
-                    _productContext.SaveChanges();
+                    productContext.ProductGroup.Add(entity);
+                    productContext.SaveChanges();
                     _memoryCache.Remove("groups");
+                    productGroupViewModel.Id = entity.Id;
                 }
                 else
                 {
                     throw new Exception("ProductGroup already exist");
                 }
             }
+            return productGroupViewModel.Id ?? 0;
         }
 
 
         public IEnumerable<ProductGroupViewModel> GetProdutGroups()
         {
-            if (_memoryCache.TryGetValue("groups", out List<ProductGroupViewModel>? productGroupsCache))
+            if (_memoryCache.TryGetValue("groups", out List<ProductGroupViewModel> productGroupsCache))
             {
                 return productGroupsCache!;
             }
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                var groups = _productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
+                var groups = productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
                 _memoryCache.Set("groups", groups, TimeSpan.FromMinutes(30));
                 return groups;
             }
         }
 
 
-        public void DeleteProductGroup(int id)
+        public int DeleteProductGroup(int id)
         {
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                if (_productContext.ProductGroup.Count(x => x.Id == id) > 0)
+                if (productContext.ProductGroup.Count(x => x.Id == id) > 0)
                 {
-                    var entityProductGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
-                    if (_productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
+                    var entityProductGroup = productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
+                    if (productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
                     {
-                        _productContext.ProductGroup.Remove(entityProductGroup!);
-                        _productContext.SaveChanges();
+                        productContext.ProductGroup.Remove(entityProductGroup!);
+                        productContext.SaveChanges();
                         _memoryCache.Remove("groups");
                     }
                     else
@@ -82,8 +78,10 @@ namespace Sem3GraphQL.Repo
                     throw new Exception("Group does not exist");
                 }
             }
+
+            return id;
         }
 
-
+        
     }
 }

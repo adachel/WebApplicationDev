@@ -2,11 +2,11 @@
 
 namespace Sem3GraphQL.Abstraction
 {
-    public interface IPoductRepo
+    public interface IProductRepo
     {
-        public void AddProduct(ProductViewModel productViewModel);
+        public int AddProduct(ProductViewModel productViewModel);
         public IEnumerable<ProductViewModel> GetProduts();
-        public void UpdateProduct(int id, float price);
-        public void DeleteProduct(int id);
+        public int UpdateProduct(int id, float price);
+        public int DeleteProduct(int id);
     }
 }
