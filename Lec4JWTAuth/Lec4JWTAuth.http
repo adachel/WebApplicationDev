@@ -1,0 +1,6 @@
+@Lec4JWTAuth_HostAddress = http://localhost:5192
+
+GET {{Lec4JWTAuth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

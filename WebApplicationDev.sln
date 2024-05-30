@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lec3GraphQL", "GraphQI\Lec3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sem3GraphQL", "Sem3GraphQL\Sem3GraphQL.csproj", "{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lec4JWTAuth", "Lec4JWTAuth\Lec4JWTAuth.csproj", "{902DC944-B2FA-4C74-9BED-5C290FA8A106}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66B0E975-72FC-4AC4-9C16-2C496FDE1EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{902DC944-B2FA-4C74-9BED-5C290FA8A106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{902DC944-B2FA-4C74-9BED-5C290FA8A106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{902DC944-B2FA-4C74-9BED-5C290FA8A106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{902DC944-B2FA-4C74-9BED-5C290FA8A106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
