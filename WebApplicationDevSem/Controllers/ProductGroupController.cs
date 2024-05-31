@@ -37,7 +37,16 @@ namespace WebApplicationDevSem.Controllers
         [HttpGet(template: "GetGroups")]
         public ActionResult<IEnumerable<ProductGroupViewModel>> GetGroups()
         {
-            return Ok(_groupRepo.GetProdutGroups());
+            try
+            {
+                return Ok(_groupRepo.GetProdutGroups());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+
         }
 
 
@@ -51,7 +60,7 @@ namespace WebApplicationDevSem.Controllers
             }
             catch
             {
-                return StatusCode(409);
+                return StatusCode(404);
             }
         }
     }

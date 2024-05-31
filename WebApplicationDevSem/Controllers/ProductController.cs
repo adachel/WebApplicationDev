@@ -38,7 +38,15 @@ namespace WebApplicationDevSem.Controllers
         [HttpGet(template: "GetProducts")]
         public ActionResult<IEnumerable<ProductViewModel>> GetProducts()
         {
-            return Ok(_productRepo.GetProduts());
+            try
+            {
+                return Ok(_productRepo.GetProduts());
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+
         }
 
 

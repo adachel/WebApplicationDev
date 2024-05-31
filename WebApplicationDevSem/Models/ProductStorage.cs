@@ -6,6 +6,6 @@
         public virtual Storage? Storage { get; set; }
         public int ProductId { get; set; }
         public int StorageId { get; set; }
-        public int Count { get; set; }
+        public int Count { get; set; } = 0;
     }
 }

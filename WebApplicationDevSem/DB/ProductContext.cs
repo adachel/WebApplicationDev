@@ -7,7 +7,8 @@ namespace WebApplicationDevSem.DB
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Storage> Storages { get; set; }
-        public DbSet<ProductGroup> ProductGroup { get; set; }
+        public DbSet<ProductGroup> ProductsGroup { get; set; }
+        public DbSet<ProductStorage> ProductsStorage {  get; set; }
 
         private string _connectionString;   //
 

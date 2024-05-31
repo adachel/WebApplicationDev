@@ -14,14 +14,12 @@ namespace WebApplicationDevSem.Repo
         private IMemoryCache _memoryCache;
         private ProductContext _productContext;
 
-
         public ProductRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
         {
             _mapper = mapper;
             _memoryCache = memoryCache;
             _productContext = productContext;
         }
-
 
         public void AddProduct(ProductViewModel productViewModel)
         {

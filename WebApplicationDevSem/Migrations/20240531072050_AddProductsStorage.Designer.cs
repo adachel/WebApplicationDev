@@ -11,8 +11,8 @@ using WebApplicationDevSem.DB;
 namespace WebApplicationDevSem.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240529181657_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240531072050_AddProductsStorage")]
+    partial class AddProductsStorage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,7 +100,7 @@ namespace WebApplicationDevSem.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("ProductStorage");
+                    b.ToTable("ProductsStorage");
                 });
 
             modelBuilder.Entity("WebApplicationDevSem.Models.Storage", b =>

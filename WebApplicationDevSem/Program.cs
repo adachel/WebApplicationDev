@@ -57,6 +57,9 @@ namespace WebApplicationDevSem
             { 
                 x.RegisterType<ProductRepo>().As<IPoductRepo>();
                 x.RegisterType<ProductGroupRepo>().As<IProductGroupRepo>();
+                x.RegisterType<StorageRepo>().As<IStorageRepo>();
+                x.RegisterType<ProductStorageRepo>().As<IProductStorageRepo>();
+
                 x.Register(c => new ProductContext(cfg.GetConnectionString("db")!)).InstancePerDependency();
             });
 

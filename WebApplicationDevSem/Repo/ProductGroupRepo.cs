@@ -28,11 +28,11 @@ namespace WebApplicationDevSem.Repo
         {
             using (_productContext)
             {
-                var entityGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
+                var entityGroup = _productContext.ProductsGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
                 if (entityGroup == null)
                 {
                     var entity = _mapper.Map<ProductGroup>(productGroupViewModel);
-                    _productContext.ProductGroup.Add(entity);
+                    _productContext.ProductsGroup.Add(entity);
                     _productContext.SaveChanges();
                     _memoryCache.Remove("groups");
                 }
@@ -52,7 +52,7 @@ namespace WebApplicationDevSem.Repo
             }
             using (_productContext)
             {
-                var groups = _productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
+                var groups = _productContext.ProductsGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
                 _memoryCache.Set("groups", groups, TimeSpan.FromMinutes(30));   
                 return groups;
             }
@@ -63,12 +63,12 @@ namespace WebApplicationDevSem.Repo
         {
             using (_productContext)
             {
-                if (_productContext.ProductGroup.Count(x => x.Id == id) > 0)
+                if (_productContext.ProductsGroup.Count(x => x.Id == id) > 0)
                 {
-                    var entityProductGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
+                    var entityProductGroup = _productContext.ProductsGroup.FirstOrDefault(x => x.Id == id);
                     if (_productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
                     {
-                        _productContext.ProductGroup.Remove(entityProductGroup!);
+                        _productContext.ProductsGroup.Remove(entityProductGroup!);
                         _productContext.SaveChanges();
                         _memoryCache.Remove("groups");
                     }
