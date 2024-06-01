@@ -4,10 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Lec4JWTAuth.Controllers
 {
+    //public static class RsaTools // когда используется RSA
+    //{
+    //    public static RSA GetPrivatKey()
+    //    {
+    //        var f = File.ReadAllText("rsa/privat_key.pem");
+    //        var rsa = RSA.Create();
+    //        rsa.ImportFromPem(f);
+    //        return rsa;
+    //    }
+    //}
+
+
 
     [ApiController]
     [Route("[controller]")]
@@ -38,7 +51,9 @@ namespace Lec4JWTAuth.Controllers
         private string GenerateTokin(UserModel user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:key"])); // получаем ключ
+            //var key = new RsaSecurityKey(RsaTools.GetPrivatKey()); // для RSA
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            //var credentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256Signature); // для RSA
 
             var claims = new[] // созд объект
             {

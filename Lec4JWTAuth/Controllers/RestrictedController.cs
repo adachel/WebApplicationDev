@@ -10,16 +10,16 @@ namespace Lec4JWTAuth.Controllers
     public class RestrictedController : ControllerBase
     {
         [HttpGet]
-        [Route("[Admins]")]
+        [Route("Admins")]
         [Authorize(Roles = "Administrator")]
-        public ActionResult AdminEndPoint() 
+        public IActionResult AdminEndPoint() 
         {
             var currentUser = GetCurrentUser();
             return Ok($"Hi you are an {currentUser.Role}");
         }
 
         [HttpGet]
-        [Route("[Users]")]
+        [Route("Users")]
         [Authorize(Roles = "Administrator, User")]
         public IActionResult UserEndPoint()
         {
