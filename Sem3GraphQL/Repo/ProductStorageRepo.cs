@@ -9,24 +9,22 @@ namespace Sem3GraphQL.Repo
 {
     public class ProductStorageRepo : IProductStorageRepo
     {
-        private ProductContext _context;
         private IMapper _mapper;
         private IMemoryCache _cache;
 
-        public ProductStorageRepo(ProductContext context, IMapper mapper, IMemoryCache cache)
+        public ProductStorageRepo(IMapper mapper, IMemoryCache cache)
         {
-            _context = context;
             _mapper = mapper;
             _cache = cache;
         }
 
-        public void AddProductToStorage(ProductStorageViewModel productSrorageViewModel)
+        public int AddProductToStorage(ProductStorageViewModel productSrorageViewModel)
         {
-            using (_context)
+            using (var productContext = new ProductContext())
             {
-                var storageEntity = _context.Storages.FirstOrDefault(x => x.Id == productSrorageViewModel.StorageId);
-                var productEntity = _context.Products.FirstOrDefault(x => x.Id == productSrorageViewModel.ProductId);
-                var productStorageEntity = _context.ProductsStorage.FirstOrDefault(x => x.ProductId == productEntity.Id);
+                var storageEntity = productContext.Storages.FirstOrDefault(x => x.Id == productSrorageViewModel.StorageId);
+                var productEntity = productContext.Products.FirstOrDefault(x => x.Id == productSrorageViewModel.ProductId);
+                var productStorageEntity = productContext.ProductsStorage.FirstOrDefault(x => x.ProductId == productEntity.Id);
 
                 if (storageEntity != null)
                 {
@@ -35,8 +33,8 @@ namespace Sem3GraphQL.Repo
                         if (productStorageEntity == null)
                         {
                             var entity = _mapper.Map<ProductStorage>(productSrorageViewModel);
-                            _context.ProductsStorage.Add(entity);
-                            _context.SaveChanges();
+                            productContext.ProductsStorage.Add(entity);
+                            productContext.SaveChanges();
                             _cache.Remove("produtsStorage");
                         }
                         else
@@ -53,7 +51,9 @@ namespace Sem3GraphQL.Repo
                 {
                     throw new Exception("Storage is not in the database");
                 }
+                return productSrorageViewModel.ProductId;
             }
+
         }
 
         public IEnumerable<ProductStorageViewModel> GetProductsFromStorage()
@@ -62,41 +62,51 @@ namespace Sem3GraphQL.Repo
             {
                 return productStorageCache;
             }
-            using (_context)
+            using (var productContext = new ProductContext())
             {
-                var productsStorage = _context.ProductsStorage.Select(_mapper.Map<ProductStorageViewModel>).ToList();
+                var productsStorage = productContext.ProductsStorage.Select(_mapper.Map<ProductStorageViewModel>).ToList();
                 _cache.Set("produtsStorage", productsStorage, TimeSpan.FromMinutes(30));
                 return productsStorage;
             }
         }
 
-        public void UpdateProductInStorage(int productId, int count)
+        public int UpdateProductInStorage(int storageId, int productId, int count)
         {
-            using (_context)
+            using (var productContext = new ProductContext())
             {
-                if (_context.ProductsStorage.Count(x => x.ProductId == productId) > 0)
+                if (productContext.ProductsStorage.FirstOrDefault(x => x.StorageId == storageId) != null)
                 {
-                    var productStorageEntity = _context.ProductsStorage.FirstOrDefault(p => p.ProductId == productId);
-                    productStorageEntity.Count = count;
-                    _context.SaveChanges();
-                    _cache.Remove("produtsStorage");
+                    var productInStorage = productContext.ProductsStorage.FirstOrDefault(x => x.StorageId == storageId && x.ProductId == productId);
+
+                    if (productInStorage != null)
+                    {
+                        var productStorageEntity = productContext.ProductsStorage.FirstOrDefault(p => p.ProductId == productId);
+                        productStorageEntity.Count = count;
+                        productContext.SaveChanges();
+                        _cache.Remove("produtsStorage");
+                    }
+                    else
+                    {
+                        throw new Exception("There is no such product");
+                    }
                 }
-                else
+                else 
                 {
-                    throw new Exception("There is no such product");
+                    throw new Exception("There is no such storage");
                 }
             }
+            return productId;
         }
 
-        public void DeleteProductInStorage(int productId)
+        public int DeleteProductInStorage(int productId)
         {
-            using (_context)
+            using (var productContext = new ProductContext())
             {
-                if (_context.ProductsStorage.Count(x => x.ProductId == productId) > 0)
+                if (productContext.ProductsStorage.Count(x => x.ProductId == productId) > 0)
                 {
-                    var productStorageEntity = _context.ProductsStorage.FirstOrDefault(p => p.ProductId == productId);
-                    _context.Remove(productStorageEntity);
-                    _context.SaveChanges();
+                    var productStorageEntity = productContext.ProductsStorage.FirstOrDefault(p => p.ProductId == productId);
+                    productContext.Remove(productStorageEntity);
+                    productContext.SaveChanges();
                     _cache.Remove("produtsStorage");
                 }
                 else
@@ -104,6 +114,7 @@ namespace Sem3GraphQL.Repo
                     throw new Exception("There is no such product");
                 }
             }
+            return productId;
         }
     }
 }

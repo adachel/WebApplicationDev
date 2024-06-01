@@ -11,31 +11,40 @@ namespace Sem3GraphQL.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
-        private ProductContext _productContext;
+        //private ProductContext _productContext;
 
-        public StorageRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
+        //public StorageRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
+        //{
+        //    _mapper = mapper;
+        //    _memoryCache = memoryCache;
+        //    _productContext = productContext;
+        //}
+
+        public StorageRepo(IMapper mapper, IMemoryCache memoryCache)
         {
             _mapper = mapper;
             _memoryCache = memoryCache;
-            _productContext = productContext;
         }
 
-        public void AddStorage(StorageViewModel storageViewModel)
+
+        public int AddStorage(StorageViewModel storageViewModel)
         {
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                var storageEntity = _productContext.Storages.FirstOrDefault(x => x.Name.ToLower().Equals(storageViewModel.Name.ToLower()));
+                var storageEntity = productContext.Storages.FirstOrDefault(x => x.Name.ToLower().Equals(storageViewModel.Name.ToLower()));
                 if (storageEntity == null)
                 {
                     var entity = _mapper.Map<Storage>(storageViewModel);
-                    _productContext.Storages.Add(entity);
-                    _productContext.SaveChanges();
+                    productContext.Storages.Add(entity);
+                    productContext.SaveChanges();
                     _memoryCache.Remove("storages");
+                    storageViewModel.Id = entity.Id;
                 }
                 else
                 {
                     throw new Exception("Storage already exist");
                 }
+                return storageViewModel.Id ?? 0;
             }
         }
 
@@ -45,9 +54,9 @@ namespace Sem3GraphQL.Repo
             {
                 return storageCache!;
             }
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                var storages = _productContext.Storages.Select(_mapper.Map<StorageViewModel>).ToList();
+                var storages = productContext.Storages.Select(_mapper.Map<StorageViewModel>).ToList();
 
                 _memoryCache.Set("storages", storages, TimeSpan.FromMinutes(30));
 
@@ -55,17 +64,17 @@ namespace Sem3GraphQL.Repo
             }
         }
 
-        public void DeleteStorage(int id)
+        public int DeleteStorage(int id)
         {
-            using (_productContext)
+            using (var productContext = new ProductContext())
             {
-                var storageEntity = _productContext.Storages.FirstOrDefault(x => x.Id == id);
+                var storageEntity = productContext.Storages.FirstOrDefault(x => x.Id == id);
                 if (storageEntity != null)
                 {
-                    if (_productContext.ProductsStorage.Count() == 0)
+                    if (storageEntity.Products.Count() == 0)
                     {
-                        _productContext.Remove(storageEntity);
-                        _productContext.SaveChanges();
+                        productContext.Remove(storageEntity);
+                        productContext.SaveChanges();
                         _memoryCache.Remove("storages");
                     }
                     else
@@ -78,6 +87,7 @@ namespace Sem3GraphQL.Repo
                     throw new Exception("There is no such storage");
                 }
             }
+            return id;
         }
     }
 }
