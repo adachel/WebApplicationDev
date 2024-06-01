@@ -26,11 +26,17 @@ namespace Sem3GraphQL
 
             builder.Services.AddSingleton<ProductRepo>()
                             .AddSingleton<ProductGroupRepo>()
-                            .AddGraphQLServer().AddQueryType<Query>()
+                            .AddSingleton<StorageRepo>()
+                            .AddSingleton<ProductStorageRepo>()
+                            .AddGraphQLServer()
+                            .AddQueryType<Query>()
                             .AddMutationType<Mutation>();
             
             builder.Services.AddSingleton<IProductRepo, ProductRepo>();
-            builder.Services.AddSingleton<IProductGroupRepo, ProductGroupRepo>(); // связывает IProductGroupRepo с ProductGroupRepo
+            builder.Services.AddSingleton<IProductGroupRepo, ProductGroupRepo>();
+
+            builder.Services.AddSingleton<IStorageRepo, StorageRepo>();
+            builder.Services.AddSingleton<IProductStorageRepo, ProductStorageRepo>();
 
 
             var app = builder.Build();

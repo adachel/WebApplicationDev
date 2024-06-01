@@ -8,8 +8,9 @@ namespace Sem3GraphQL.DB
         public DbSet<Product> Products { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<ProductGroup> ProductGroup { get; set; }
+        public DbSet<ProductStorage> ProductsStorage { get; set; }
 
-        private string _connectionString = "Host=localhost;Port=5432;Username=aaa;Password=1234;Database=Products";   //
+        private string _connectionString = "Host=localhost;Port=5432;Username=aaa;Password=1234;Database=ProductsBase";   //
 
         public ProductContext() //
         {

@@ -10,6 +10,8 @@ namespace Sem3GraphQL.Mapping
         {
             CreateMap<Product, ProductViewModel>().ReverseMap(); // связываем объекты. ReverseMap - мапится и в обратную сторону
             CreateMap<ProductGroup, ProductGroupViewModel>().ReverseMap();
+            CreateMap<Storage, StorageViewModel>().ReverseMap();
+            CreateMap<ProductStorage, ProductStorageViewModel>().ReverseMap();
 
         }
     }

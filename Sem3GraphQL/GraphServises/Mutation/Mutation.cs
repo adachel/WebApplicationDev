@@ -22,6 +22,10 @@ namespace Sem3GraphQL.GraphServises.Mutation
 
         public int AddProductGroup(ProductGroupViewModel productGroupViewModel) => _productGroupRepo.AddProductGroup(productGroupViewModel);
         public int DeleteProductGroup(int id) => _productGroupRepo.DeleteProductGroup(id);
+
+
+
+
         
     } 
 }
