@@ -12,7 +12,7 @@ namespace Lec4JWTAuth.Controllers
         [HttpGet]
         [Route("Admins")]
         [Authorize(Roles = "Administrator")]
-        public IActionResult AdminEndPoint() 
+        public ActionResult AdminEndPoint() 
         {
             var currentUser = GetCurrentUser();
             return Ok($"Hi you are an {currentUser.Role}");
@@ -21,7 +21,7 @@ namespace Lec4JWTAuth.Controllers
         [HttpGet]
         [Route("Users")]
         [Authorize(Roles = "Administrator, User")]
-        public IActionResult UserEndPoint()
+        public ActionResult UserEndPoint()
         {
             var currentUser = GetCurrentUser();
             return Ok($"Hi you are an {currentUser.Role}");
@@ -37,9 +37,7 @@ namespace Lec4JWTAuth.Controllers
                 return new UserModel
                 {
                     UserName = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = (UserRole)Enum.Parse(typeof(UserRole), 
-                    userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value)
-                    
+                    Role = (UserRole)Enum.Parse(typeof(UserRole), userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value)
                 };
             }
             return null;

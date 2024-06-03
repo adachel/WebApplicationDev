@@ -1,5 +1,6 @@
 
 using Lec4JWTAuth.AuthorizatoinModel;
+using Lec4JWTAuth.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,20 +12,21 @@ namespace Lec4JWTAuth
 {
     public class Program
     {
-        // Для windows нужно установить OpenSSL (например https://wiki.openssl.org/index.php/Binaries). В терминале командами:
+        // Для windows нужно установить OpenSSL (например https://wiki.openssl.org/index.php/Binaries).
+        // Открываем каталог RSA(нужно создать) в терминале и командами:
         // openssl genpkey -algorithm RSA -out private_key.pem - генерирует приватный ключ
         //                                                       и сохраняет его в каталог под именем private_key.pem
         // openssl rsa -pubout -in private_key.pem -out public_key.pem - получает публичный ключ на основе информации,
         //                                                               содержащейся в файла private_key.pem,
         //                                                               и сохраняет ее в файл public_key.pem
 
-        //static RSA GetPublicKey()
-        //{
-        //    var f = File.ReadAllText("rsa/public_key.pem");
-        //    var rsa = RSA.Create();
-        //    rsa.ImportFromPem(f);
-        //    return rsa; 
-        //}
+        public static RSA GetPublicKey()   // для RSA
+        {
+            var f = File.ReadAllText("RSA/public_key.pem");
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(f);
+            return rsa;
+        }
 
 
 
@@ -38,6 +40,8 @@ namespace Lec4JWTAuth
             //builder.Services.AddSwaggerGen(); // вместо этого код ниже
 
             //////////////////////////////////////////////
+
+            builder.Services.AddTransient<IUserRepository, UserRepository>();
 
             //builder.Services.AddScoped<IUserAuthenticationService, AuthenticationMock>(); // экземпляр на все объекты одного запроса
             //builder.Services.AddSingleton<IUserAunthenticationService, AunthenticationMock>(); // экземпляр на весь жизненный цикл приложения
@@ -54,11 +58,15 @@ namespace Lec4JWTAuth
                     ValidateAudience = true,
                     ValidateLifetime = true, // срок действия токена
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    // builder.Configuration["Jwt: Issuer"] - способ доступа к параметрам
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"], // доступ к параметрам
                     ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                    // полчаем ключ, кот будем проверять
+
+
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) 
+                                                                        // полчаем ключ, кот будем проверять. Для HmacSha256
+
+                    IssuerSigningKey = new RsaSecurityKey(GetPublicKey()) // для RSA
+
                 };
             });
 

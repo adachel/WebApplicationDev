@@ -4,7 +4,7 @@
     {
         public UserModel Authenticate(LoginModel model)
         {
-            if (model.Name == "admin" && model.Password == "password")
+            if (model.Name == "admin" && model.Password == "root")
             {
                 return new UserModel { Password = model.Password, UserName = model.Name, Role = UserRole.Administrator }; 
             }

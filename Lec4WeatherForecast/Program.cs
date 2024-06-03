@@ -3,7 +3,7 @@ namespace Lec4WeatherForecast
 {
     public class Program
     {
-        // запомним url https://localhost:9090/WeatherForecast
+        // запомним url https://localhost:62720/WeatherForecast
 
         // командой docker build -t weatherforecast . - билдим образ. докер должен быть запущен
 

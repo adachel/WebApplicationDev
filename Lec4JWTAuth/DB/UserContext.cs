@@ -9,7 +9,7 @@ namespace Lec4JWTAuth.DB
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.LogTo(Console.WriteLine).UseNpgsql("строка подключения");    //
+            optionsBuilder.LogTo(Console.WriteLine).UseNpgsql("Host=localhost;Port=5432;Username=aaa;Password=1234;Database=Lec4");    //
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,3 +40,8 @@ namespace Lec4JWTAuth.DB
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+
+
+// в терминале для ChatBD  -  dotnet tool install --global dotnet-ef --version 8.0.4
+// далее  -  dotnet ef migrations add InitialCreate. Получили два файла в каталоге Migrations.
+// для изменений в БД  -  dotnet ef database update

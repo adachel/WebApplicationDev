@@ -7,7 +7,7 @@ WORKDIR /app	# рабочий каталог в контейнере, куда будут копироватьс€ и собиратьс
 COPY *.csproj ./	# kопирует файл проекта в рабочий каталог в контейнере.
 RUN dotnet restore # «апускает команду dotnet restore дл€ восстановлени€ зависимостей проекта
 COPY . ./	# копируем код в каталог в кот находимс€
-RUN dotnet publish -c Relese -o out		# «апускает команду dotnet publish дл€ сборки проекта в режиме "Release" и помещает результаты в каталог "out"
+RUN dotnet publish -c Release -o out		# «апускает команду dotnet publish дл€ сборки проекта в режиме "Release" и помещает результаты в каталог "out"
 
 # шаг 2
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime # дл€ этапа выполнени€
