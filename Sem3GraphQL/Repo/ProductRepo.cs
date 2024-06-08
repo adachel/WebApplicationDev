@@ -11,6 +11,7 @@ namespace Sem3GraphQL.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
+        private ProductContext _productContext;
 
         public ProductRepo(IMapper mapper, IMemoryCache memoryCache)
         {
@@ -18,16 +19,21 @@ namespace Sem3GraphQL.Repo
             _memoryCache = memoryCache;
         }
 
+        public ProductRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext) : this(mapper, memoryCache)
+        {
+            _productContext = productContext;
+        }
+
         public int AddProduct(ProductViewModel productViewModel)
         {
             using (var productContext = new ProductContext())
             {
-                var entityProduct = productContext.Products.FirstOrDefault(x => x.Name!.ToLower().Equals(productViewModel.Name!.ToLower()));
+                var entityProduct = _productContext.Products.FirstOrDefault(x => x.Name!.ToLower().Equals(productViewModel.Name!.ToLower()));
                 if (entityProduct == null)
                 {
                     var entity = _mapper.Map<Product>(productViewModel);
-                    productContext.Products.Add(entity);
-                    productContext.SaveChanges();
+                    _productContext.Products.Add(entity);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                     productViewModel.Id = entity.Id;
                 }
@@ -47,6 +53,7 @@ namespace Sem3GraphQL.Repo
             }
             using (var productContext = new ProductContext())
             {
+                productContext.connectionString = _productContext.connectionString;
                 var products = productContext.Products.Select(_mapper.Map<ProductViewModel>).ToList();
                 _memoryCache.Set("products", products, TimeSpan.FromMinutes(30));   //"products" - ключ, products - что кэшируем,
                                                                                     //TimeSpan.FromMinutes(30) - время кэша
@@ -58,11 +65,11 @@ namespace Sem3GraphQL.Repo
         {
             using (var productContext = new ProductContext())
             {
-                if (productContext.Products.Count(x => x.Id == id) > 0)
+                if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
-                    var x = productContext.Products.FirstOrDefault(x => x.Id == id);
+                    var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
                     x.Price = price;
-                    productContext.SaveChanges();
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
                 else
@@ -77,11 +84,11 @@ namespace Sem3GraphQL.Repo
         {
             using (var productContext = new ProductContext())
             {
-                if (productContext.Products.Count(x => x.Id == id) > 0)
+                if (_productContext.Products.Count(x => x.Id == id) > 0)
                 {
-                    var x = productContext.Products.FirstOrDefault(x => x.Id == id);
-                    productContext.Products.Remove(x);
-                    productContext.SaveChanges();
+                    var x = _productContext.Products.FirstOrDefault(x => x.Id == id);
+                    _productContext.Products.Remove(x);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("products");
                 }
                 else

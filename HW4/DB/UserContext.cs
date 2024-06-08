@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HW4.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Lec4JWTAuth.DB
+namespace HW4.DB
 {
     public partial class UserContext : DbContext
     {
@@ -46,8 +47,3 @@ namespace Lec4JWTAuth.DB
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-
-
-// в терминале для ChatBD  -  dotnet tool install --global dotnet-ef --version 8.0.4
-// далее  -  dotnet ef migrations add InitialCreate. Получили два файла в каталоге Migrations.
-// для изменений в БД  -  dotnet ef database update

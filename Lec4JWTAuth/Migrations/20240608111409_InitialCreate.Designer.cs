@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lec4JWTAuth.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20240602075621_InitialCreate")]
+    [Migration("20240608111409_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

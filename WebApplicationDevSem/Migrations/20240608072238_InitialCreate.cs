@@ -61,7 +61,7 @@ namespace WebApplicationDevSem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductStorage",
+                name: "ProductsStorage",
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "integer", nullable: false),
@@ -72,13 +72,13 @@ namespace WebApplicationDevSem.Migrations
                 {
                     table.PrimaryKey("product_storage_pkey", x => new { x.ProductId, x.StorageId });
                     table.ForeignKey(
-                        name: "FK_ProductStorage_products_ProductId",
+                        name: "FK_ProductsStorage_products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "products",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductStorage_storages_StorageId",
+                        name: "FK_ProductsStorage_storages_StorageId",
                         column: x => x.StorageId,
                         principalTable: "storages",
                         principalColumn: "id",
@@ -91,8 +91,8 @@ namespace WebApplicationDevSem.Migrations
                 column: "ProductGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductStorage_StorageId",
-                table: "ProductStorage",
+                name: "IX_ProductsStorage_StorageId",
+                table: "ProductsStorage",
                 column: "StorageId");
         }
 
@@ -100,7 +100,7 @@ namespace WebApplicationDevSem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductStorage");
+                name: "ProductsStorage");
 
             migrationBuilder.DropTable(
                 name: "products");

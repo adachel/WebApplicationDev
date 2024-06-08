@@ -11,6 +11,7 @@ namespace Sem3GraphQL.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
+        private ProductContext _productContext;
 
         public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache)
         {
@@ -18,16 +19,21 @@ namespace Sem3GraphQL.Repo
             _memoryCache = memoryCache;
         }
 
+        public ProductGroupRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext) : this(mapper, memoryCache)
+        {
+            _productContext = productContext;
+        }
+
         public int AddProductGroup(ProductGroupViewModel productGroupViewModel)
         {
             using (var productContext = new ProductContext())
             {
-                var entityGroup = productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
+                var entityGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Name!.ToLower().Equals(productGroupViewModel.Name!.ToLower()));
                 if (entityGroup == null)
                 {
                     var entity = _mapper.Map<ProductGroup>(productGroupViewModel);
-                    productContext.ProductGroup.Add(entity);
-                    productContext.SaveChanges();
+                    _productContext.ProductGroup.Add(entity);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("groups");
                     productGroupViewModel.Id = entity.Id;
                 }
@@ -48,7 +54,7 @@ namespace Sem3GraphQL.Repo
             }
             using (var productContext = new ProductContext())
             {
-                var groups = productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
+                var groups = _productContext.ProductGroup.Select(_mapper.Map<ProductGroupViewModel>).ToList();
                 _memoryCache.Set("groups", groups, TimeSpan.FromMinutes(30));
                 return groups;
             }
@@ -59,13 +65,13 @@ namespace Sem3GraphQL.Repo
         {
             using (var productContext = new ProductContext())
             {
-                if (productContext.ProductGroup.Count(x => x.Id == id) > 0)
+                if (_productContext.ProductGroup.Count(x => x.Id == id) > 0)
                 {
-                    var entityProductGroup = productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
-                    if (productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
+                    var entityProductGroup = _productContext.ProductGroup.FirstOrDefault(x => x.Id == id);
+                    if (_productContext.Products.FirstOrDefault(x => x.ProductGroupId == entityProductGroup!.Id) == null)
                     {
-                        productContext.ProductGroup.Remove(entityProductGroup!);
-                        productContext.SaveChanges();
+                        _productContext.ProductGroup.Remove(entityProductGroup!);
+                        _productContext.SaveChanges();
                         _memoryCache.Remove("groups");
                     }
                     else

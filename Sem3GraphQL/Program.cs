@@ -1,12 +1,16 @@
 
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Sem3GraphQL.Abstraction;
 using Sem3GraphQL.DB;
 using Sem3GraphQL.GraphServises.Mutation;
 using Sem3GraphQL.GraphServises.Query;
 using Sem3GraphQL.Mapping;
 using Sem3GraphQL.Repo;
+
+
+// http://localhost:18000/graphql/
 
 namespace Sem3GraphQL
 {
@@ -38,6 +42,12 @@ namespace Sem3GraphQL
             builder.Services.AddSingleton<IStorageRepo, StorageRepo>();
             builder.Services.AddSingleton<IProductStorageRepo, ProductStorageRepo>();
 
+            builder.Host.ConfigureContainer<ContainerBuilder>(x =>
+            {
+                x.Register(c => new ProductContext(builder.Configuration
+                                                          .GetConnectionString("db")!))
+                                                          .InstancePerDependency();
+            });
 
             var app = builder.Build();
 

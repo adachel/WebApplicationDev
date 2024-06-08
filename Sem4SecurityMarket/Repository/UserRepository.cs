@@ -50,7 +50,6 @@ namespace Sem4SecurityMarket.Repository
                 return checkUser.RoleId;
             }
 
-
             throw new Exception("Some error");
         }
     }

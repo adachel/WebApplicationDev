@@ -11,7 +11,7 @@ using Sem4SecurityMarket.Context;
 namespace Sem4SecurityMarket.Migrations
 {
     [DbContext(typeof(UserRoleContext))]
-    [Migration("20240603183547_InitialCreate")]
+    [Migration("20240608084222_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
