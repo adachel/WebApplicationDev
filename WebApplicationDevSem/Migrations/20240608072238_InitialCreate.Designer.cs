@@ -11,8 +11,8 @@ using WebApplicationDevSem.DB;
 namespace WebApplicationDevSem.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240531072050_AddProductsStorage")]
-    partial class AddProductsStorage
+    [Migration("20240608072238_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

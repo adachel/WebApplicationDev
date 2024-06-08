@@ -11,14 +11,7 @@ namespace Sem3GraphQL.Repo
     {
         private readonly IMapper _mapper;
         private IMemoryCache _memoryCache;
-        //private ProductContext _productContext;
-
-        //public StorageRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext)
-        //{
-        //    _mapper = mapper;
-        //    _memoryCache = memoryCache;
-        //    _productContext = productContext;
-        //}
+        private ProductContext _productContext;
 
         public StorageRepo(IMapper mapper, IMemoryCache memoryCache)
         {
@@ -26,17 +19,21 @@ namespace Sem3GraphQL.Repo
             _memoryCache = memoryCache;
         }
 
+        public StorageRepo(IMapper mapper, IMemoryCache memoryCache, ProductContext productContext) : this(mapper, memoryCache)
+        {
+            _productContext = productContext;
+        }
 
         public int AddStorage(StorageViewModel storageViewModel)
         {
             using (var productContext = new ProductContext())
             {
-                var storageEntity = productContext.Storages.FirstOrDefault(x => x.Name.ToLower().Equals(storageViewModel.Name.ToLower()));
+                var storageEntity = _productContext.Storages.FirstOrDefault(x => x.Name.ToLower().Equals(storageViewModel.Name.ToLower()));
                 if (storageEntity == null)
                 {
                     var entity = _mapper.Map<Storage>(storageViewModel);
-                    productContext.Storages.Add(entity);
-                    productContext.SaveChanges();
+                    _productContext.Storages.Add(entity);
+                    _productContext.SaveChanges();
                     _memoryCache.Remove("storages");
                     storageViewModel.Id = entity.Id;
                 }
@@ -56,7 +53,7 @@ namespace Sem3GraphQL.Repo
             }
             using (var productContext = new ProductContext())
             {
-                var storages = productContext.Storages.Select(_mapper.Map<StorageViewModel>).ToList();
+                var storages = _productContext.Storages.Select(_mapper.Map<StorageViewModel>).ToList();
 
                 _memoryCache.Set("storages", storages, TimeSpan.FromMinutes(30));
 
@@ -68,13 +65,13 @@ namespace Sem3GraphQL.Repo
         {
             using (var productContext = new ProductContext())
             {
-                var storageEntity = productContext.Storages.FirstOrDefault(x => x.Id == id);
+                var storageEntity = _productContext.Storages.FirstOrDefault(x => x.Id == id);
                 if (storageEntity != null)
                 {
                     if (storageEntity.Products.Count() == 0)
                     {
-                        productContext.Remove(storageEntity);
-                        productContext.SaveChanges();
+                        _productContext.Remove(storageEntity);
+                        _productContext.SaveChanges();
                         _memoryCache.Remove("storages");
                     }
                     else

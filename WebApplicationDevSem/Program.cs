@@ -53,8 +53,8 @@ namespace WebApplicationDevSem
             config.AddJsonFile("appsettings.json");
             var cfg = config.Build();
 
-            builder.Host.ConfigureContainer<ContainerBuilder>(x => 
-            { 
+            builder.Host.ConfigureContainer<ContainerBuilder>(x =>
+            {
                 x.RegisterType<ProductRepo>().As<IPoductRepo>();
                 x.RegisterType<ProductGroupRepo>().As<IProductGroupRepo>();
                 x.RegisterType<StorageRepo>().As<IStorageRepo>();

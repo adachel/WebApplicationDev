@@ -7,9 +7,15 @@ namespace Lec4JWTAuth.DB
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
+        public UserContext()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.LogTo(Console.WriteLine).UseNpgsql("Host=localhost;Port=5432;Username=aaa;Password=1234;Database=Lec4");    //
+            optionsBuilder
+                .LogTo(Console.WriteLine)
+                .UseNpgsql("Host=localhost;Port=5432;Username=aaa;Password=1234;Database=Lec4");    //
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

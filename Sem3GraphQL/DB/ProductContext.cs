@@ -6,24 +6,24 @@ namespace Sem3GraphQL.DB
     public class ProductContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
-        public DbSet<Storage> Storages { get; set; }
+        public DbSet<Storage> Storages { get; set; }   
         public DbSet<ProductGroup> ProductGroup { get; set; }
         public DbSet<ProductStorage> ProductsStorage { get; set; }
 
-        private string _connectionString = "Host=localhost;Port=5432;Username=aaa;Password=1234;Database=ProductsBase";   //
+        public string connectionString;   //
 
         public ProductContext() //
         {
         }
 
-        public ProductContext(string connectionString)  //
+        public ProductContext(string connectionStringProduct)  //
         {
-            _connectionString = connectionString;
+            connectionString = connectionStringProduct;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(_connectionString);    //
+            optionsBuilder.LogTo(Console.WriteLine).UseLazyLoadingProxies().UseNpgsql(connectionString);    //
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
