@@ -34,6 +34,10 @@ namespace Lec4JWTAuth.Controllers
             if (identity != null)
             {
                 var userClaims = identity.Claims;
+
+                var ddd = (UserRole)Enum.Parse(typeof(UserRole), userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+
+
                 return new UserModel
                 {
                     UserName = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,

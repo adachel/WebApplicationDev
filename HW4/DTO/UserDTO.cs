@@ -1,9 +1,14 @@
-﻿namespace HW4.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HW4.DTO
 {
     public class UserDTO
     {
-        //public int Id { get; set; }
-        public string Name { get; set; }
+        [Required] // делает поле обязательным
+        [EmailAddress]  // проверяет, что это email
+        public string Email { get; set; }
+        [Required]
+
         public string Password { get; set; }
         public UserRole UserRole { get; set; }
     }

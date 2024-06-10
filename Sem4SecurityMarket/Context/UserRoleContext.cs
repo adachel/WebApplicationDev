@@ -31,9 +31,13 @@ namespace Sem4SecurityMarket.Context
                 ent.ToTable("users");
 
                 ent.Property(e => e.Id).HasColumnName("id");
+
                 ent.Property(e => e.Email).HasMaxLength(255).HasColumnName("name");
+
                 ent.Property(e => e.Password).HasMaxLength(255).HasColumnName("password");
+
                 ent.Property(e => e.Salt).HasColumnName("salt");
+
                 ent.Property(e => e.RoleId).HasConversion<int>();
 
                 ent.HasOne(u => u.Role).WithMany(r => r.Users).HasForeignKey(u => u.RoleId);

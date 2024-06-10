@@ -1,7 +1,10 @@
-﻿namespace HW4.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HW4.Models
 {
     public class Role
     {
+        [Key]
         public RoleId RoleId { get; set; }
         public string Name { get; set; }
 

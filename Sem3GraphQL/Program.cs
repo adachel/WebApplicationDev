@@ -24,6 +24,7 @@ namespace Sem3GraphQL
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
             builder.Services.AddMemoryCache();
             builder.Services.AddAutoMapper(typeof(MappingProfile));

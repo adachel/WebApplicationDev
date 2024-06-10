@@ -8,39 +8,48 @@ namespace HW4.Repo
 {
     public class UserRepo : IUserRepo
     {
-        public void UserAdd(string name, string password, RoleId roleId)
+        private readonly UserContext _userContext;
+
+        public UserRepo(UserContext userContext)
         {
-            using (var context = new UserContext())
-            {
-                if (roleId == RoleId.Admin)
-                {
-                    var admin = context.Roles.Count(x => x.RoleId == RoleId.Admin);
-                    if (admin > 1)
-                    {
-                        throw new Exception("Администратор может быть только один");
-                    }
-                }
-
-                var newUser = new User();
-                newUser.Name = name;
-                newUser.RoleId = roleId;
-
-                newUser.Salt = new byte[16];
-                new Random().NextBytes(newUser.Salt);
-                var data = Encoding.UTF8.GetBytes(password).Concat(newUser.Salt).ToArray();
-
-                newUser.Password = new SHA512Managed().ComputeHash(data);
-
-                context.Add(newUser);
-                context.SaveChanges();
-            }
+            _userContext = userContext;
         }
 
-        public RoleId UserCheck(string name, string password)
+        public void UserAdd(string email, string password, RoleId roleId)
         {
-            using (var context = new UserContext())
+
+            if (roleId == RoleId.Admin)
             {
-                var checkUser = context.Users.FirstOrDefault(user => user.Name == name);
+                var admin = _userContext.Roles.Count(x => x.RoleId == RoleId.Admin);
+                if (admin > 0)
+                {
+                    throw new Exception("There can only be one administrator");
+                }
+            }
+
+            var user = _userContext.Users.FirstOrDefault(x => x.Email == email);    
+            if (user == null)
+            {
+                var newUser = new User();
+            newUser.Email = email;
+            newUser.RoleId = roleId;
+
+            newUser.Salt = new byte[16];
+            new Random().NextBytes(newUser.Salt);
+            var data = Encoding.UTF8.GetBytes(password).Concat(newUser.Salt).ToArray();
+
+            newUser.Password = new SHA512Managed().ComputeHash(data);
+
+            _userContext.Add(newUser);
+            _userContext.SaveChanges();
+            }
+            else throw new Exception("This email is already in use");
+        }
+
+        public RoleId UserCheck(string email, string password)
+        {
+            
+                var checkUser = _userContext.Users.FirstOrDefault(user => user.Email == email);
                 if (checkUser == null)
                 {
                     throw new Exception("User not found");
@@ -53,8 +62,8 @@ namespace HW4.Repo
                     return checkUser.RoleId;
                 }
 
-                throw new Exception("Some error");
-            }
+                throw new Exception("Incorrect password");
+            
 
         }
     }
