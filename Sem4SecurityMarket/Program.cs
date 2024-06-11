@@ -60,6 +60,7 @@ namespace Sem4SecurityMarket
 
                         });
                 });
+
             builder.Services.AddDbContext<UserRoleContext>(option =>
                 option.UseNpgsql(builder.Configuration.GetConnectionString("db")));
 

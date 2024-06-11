@@ -1,5 +1,6 @@
 ﻿using HW4.Abstraction;
 using HW4.DTO;
+using HW4.Models;
 using HW4.Repo;
 using HW4.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -9,10 +10,10 @@ namespace HW4.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : ControllerBase
+    public class LoginController(IUserRepo userRepo, ITokenService tokenService) : ControllerBase
     {
-        private IUserRepo _userRepo;
-        private RoleIdToUserRole _roleIdToUserRole;
+        private IUserRepo _userRepo = userRepo;
+        private ITokenService _tokenService = tokenService;
 
         [AllowAnonymous]
         [HttpPost]
@@ -21,7 +22,7 @@ namespace HW4.Controllers
         {
             try
             {
-                _userRepo.UserAdd(user.Name, user.Password, (Models.RoleId)user.UserRole);
+                _userRepo.UserAdd(user.Email, user.Password, (RoleId)user.UserRole);
             }
             catch (Exception e)
             {
@@ -36,9 +37,10 @@ namespace HW4.Controllers
         {
             try
             {
-                var roleId = _userRepo.UserCheck(userLogin.Name, userLogin.Password);
-                var user = new UserDTO { Name = userLogin.Name, UserRole = _roleIdToUserRole.UserRoleToRoleId(roleId) };
-                var token = GenerateToken(user);
+                var roleId = _userRepo.UserCheck(userLogin.Email, userLogin.Password);
+                var user = new UserDTO { Email = userLogin.Email, UserRole = userLogin.UserRole };
+                
+                var token = _tokenService.GenerateToken(user.Email, roleId.ToString());
 
                 return Ok(token);
             }
